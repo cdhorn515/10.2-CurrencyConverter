@@ -1,6 +1,8 @@
 package com.cdhorn;
 
 
+import java.util.HashMap;
+
 public class Money {
 
     public double amount;
@@ -10,80 +12,60 @@ public class Money {
     public double bitcoin;
     public double euro;
 
-    public Money(double amount) {
+    //HashMap is converting to US Dollars
+    private HashMap<String, Double> rateMap = new HashMap<String, Double>() {{
+        put("USD", 1.0);
+        put("JPY", 0.0089);
+        put("EUR", 1.164);
+        put("XBT", 2546.03);
+    }};
+
+    public Money(String currency, double amount) {
+        this.currency = currency;
         this.amount = amount;
     }
 
+    public double convertToDollar() {
+        double convertedAmount;
+        switch (currency) {
+            case "JPY":
+                double rate = rateMap.get("JPY");
+                convertedAmount = amount * rate;
+                break;
+            case "EUR":
+                rate = rateMap.get("EUR" );
+                convertedAmount = amount * rate;
+                break;
+            case "XBT":
+                rate = rateMap.get("XBT");
+                convertedAmount = amount * rate;
+                break;
+            default:
+                convertedAmount = amount;
+        }
+        return convertedAmount;
+    }
 
-    public double dollarToEuro(double dollar) {
-        euro = dollar * 0.86;
-        System.out.println(dollar + " dollars is approximately " + euro + " euros");
+
+    public double toEuro() {
+        euro = convertToDollar() * 0.86;
+        System.out.println(amount + " " + currency + " is approximately " + euro + " EUR");
         return euro;
     }
 
-    public double dollarToYen(double dollar) {
-        yen = dollar * 111.86;
-        System.out.println(dollar + " dollars is approximately " + yen + " yen.");
+    public double toYen() {
+        yen = convertToDollar() * 111.88;
+        System.out.println(amount + " " + currency + " is approximately " + yen + " JPY.");
         return yen;
     }
 
-    public double dollarToBitCoin(double dollar) {
-        bitcoin = dollar * 0.00039;
-        System.out.println(dollar + " dollars is approximately " + bitcoin + " bitcoin.");
+    public double toBitCoin() {
+        bitcoin = convertToDollar() * 0.00039;
+        System.out.println(amount + " " + currency + " is approximately " + bitcoin + " XBT.");
         return bitcoin;
     }
 
-    public double euroToDollar(double euro) {
-        dollar = euro * 1.16;
-        System.out.println(euro + " euros is approximately " + dollar + " dollars.");
-        return dollar;
-    }
-
-    public double bitcoinToDollar(double bitcoin) {
-        dollar = bitcoin * 2541.31;
-        System.out.println(bitcoin + " bitcoin is approximately " + dollar + " dollars.");
-        return dollar;
-    }
-
-    public double yenToDollar(double yen) {
-        dollar = yen * 0.009;
-        System.out.println(yen + " yen is approximately " + dollar + " dollars.");
-        return dollar;
-    }
-
-    public double yenToEuro(double yen) {
-        yenToDollar(yen);
-        euro = dollarToEuro(dollar);
-        return euro;
-    }
-
-    public double yenToBitcoin(double yen) {
-        yenToDollar(yen);
-        bitcoin = dollarToBitCoin(dollar);
-        return bitcoin;
-    }
-
-    public double euroToYen(double euro) {
-        euroToDollar(euro);
-        yen = dollarToYen(dollar);
-        return yen;
-    }
-
-    public double euroToBitcoin(double euro) {
-        euroToDollar(euro);
-        bitcoin = dollarToBitCoin(dollar);
-        return bitcoin;
-    }
-
-    public double bitcoinToEuro(double bitcoin) {
-        bitcoinToDollar(bitcoin);
-        euro = dollarToEuro(dollar);
-        return euro;
-    }
-
-    public double bitcointoYen(double bitcoin) {
-        bitcoinToDollar(bitcoin);
-        yen = dollarToYen(dollar);
-        return yen;
+    public void toDollar() {
+        System.out.println(amount + " " + currency + " is approximately " + convertToDollar() + " USD.");
     }
 }
