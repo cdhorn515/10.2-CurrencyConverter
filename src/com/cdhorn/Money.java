@@ -1,16 +1,18 @@
 package com.cdhorn;
 
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Money {
 
     public double amount;
     public String currency;
-    public double dollar;
     public double yen;
     public double bitcoin;
     public double euro;
+    //limit decimal places to thousandths
+    DecimalFormat df = new DecimalFormat("#.###");
 
     //HashMap is converting to US Dollars
     private HashMap<String, Double> rateMap = new HashMap<String, Double>() {{
@@ -43,24 +45,28 @@ public class Money {
             default:
                 convertedAmount = amount;
         }
-        return convertedAmount;
+        return Double.parseDouble(df.format(convertedAmount));
+
     }
 
 
     public double toEuro() {
-        euro = convertToDollar() * 0.86;
+        euro = Double.parseDouble(df.format(convertToDollar() * 0.86));
+//                convertToDollar() * 0.86;
         System.out.println(amount + " " + currency + " is approximately " + euro + " EUR");
         return euro;
     }
 
     public double toYen() {
-        yen = convertToDollar() * 111.88;
+        yen = Double.parseDouble(df.format(convertToDollar() * 111.88));
+
+        ;
         System.out.println(amount + " " + currency + " is approximately " + yen + " JPY.");
         return yen;
     }
 
     public double toBitCoin() {
-        bitcoin = convertToDollar() * 0.00039;
+        bitcoin = Double.parseDouble(df.format(convertToDollar() * 0.00039));
         System.out.println(amount + " " + currency + " is approximately " + bitcoin + " XBT.");
         return bitcoin;
     }
