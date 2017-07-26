@@ -52,7 +52,6 @@ public class Money {
 
     public double toEuro() {
         euro = Double.parseDouble(df.format(convertToDollar() * 0.86));
-//                convertToDollar() * 0.86;
         System.out.println(amount + " " + currency + " is approximately " + euro + " EUR");
         return euro;
     }
@@ -60,7 +59,7 @@ public class Money {
     public double toYen() {
         yen = Double.parseDouble(df.format(convertToDollar() * 111.88));
 
-        ;
+
         System.out.println(amount + " " + currency + " is approximately " + yen + " JPY.");
         return yen;
     }
